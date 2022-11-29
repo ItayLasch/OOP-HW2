@@ -95,11 +95,15 @@ public class TechnionTunesImpl implements TechnionTunes {
         User user1 = this.getUser(userId1);
         User user2 = this.getUser(userId2);
 
-        if (user1.equals(user2) || user1.favoriteSongInCommon(user2)) {
+        if (user1.equals(user2)) {
             return true;
         }
 
         if (user1.getFriends().containsKey(user2)) {
+            if (user1.favoriteSongInCommon(user2))
+            {
+                return true;
+            }
             return false;
         }
 
