@@ -99,6 +99,10 @@ public class TechnionTunesImpl implements TechnionTunes {
             return true;
         }
 
+        if (user1.getFriends().containsKey(user2)) {
+            return false;
+        }
+
         Set<User> reachable = new HashSet<User>(); /* BFS Implementation - Algorithem Course Lecture 1 */
         Queue<User> queue = new LinkedList<User>();
         reachable.add(user1);
