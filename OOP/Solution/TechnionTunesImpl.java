@@ -107,7 +107,11 @@ public class TechnionTunesImpl implements TechnionTunes {
         User user1 = this.getUser(userId1);
         User user2 = this.getUser(userId2);
 
-        Set<User> reachable = new HashSet<User>();
+        if (user1.equals(user2) || user1.favoriteSongInCommon(user2)) {
+            return true;
+        }
+
+        Set<User> reachable = new HashSet<User>(); /* BFS Implementation - Algorithem Course Lecture 1 */
         Queue<User> queue = new LinkedList<User>();
         reachable.add(user1);
         queue.add(user1);
@@ -124,7 +128,7 @@ public class TechnionTunesImpl implements TechnionTunes {
             queue.addAll(toAdd);
         }
 
-        return true;
+        return false;
     }
 
     class CompareSongsByRatings implements Comparator<Song> {
