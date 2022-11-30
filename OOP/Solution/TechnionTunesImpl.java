@@ -31,12 +31,8 @@ public class TechnionTunesImpl implements TechnionTunes {
     }
 
     public void makeFriends(int id1, int id2) throws UserDoesntExist, User.AlreadyFriends, User.SamePerson {
-        if (!users.containsKey(id1) || !users.containsKey(id2)) {
-            throw new UserDoesntExist();
-        }
-
-        User user1 = users.get(id1);
-        User user2 = users.get(id2);
+        User user1 = this.getUser(id1);
+        User user2 = this.getUser(id2);
 
         user1.AddFriend(user2);
         user2.AddFriend(user1);
@@ -68,20 +64,12 @@ public class TechnionTunesImpl implements TechnionTunes {
     }
 
     public Set<Song> getIntersection(int IDs[]) throws UserDoesntExist {
-        List<Collection<Song>> listSong = new LinkedList<Collection<Song>>();
+        Set<Song> songSet = new HashSet<Song>(this.songs.values());
         for (int id : IDs) {
-            User u = this.getUser(id);
-            listSong.add(u.getRatedSongs());
+            songSet.retainAll(this.getUser(id).getRatedSongs());
         }
 
-        Set<Song> ratedByAll = new HashSet<Song>();
-        for (Song s : songs.values()) {
-            if (listSong.stream().allMatch(set -> set.contains(s))) {
-                ratedByAll.add(s);
-            }
-        }
-
-        return ratedByAll;
+        return songSet;
     }
 
     public Collection<Song> sortSongs(Comparator<Song> comp) {
@@ -107,7 +95,19 @@ public class TechnionTunesImpl implements TechnionTunes {
         User user1 = this.getUser(userId1);
         User user2 = this.getUser(userId2);
 
-        Set<User> reachable = new HashSet<User>();
+        if (user1.equals(user2)) {
+            return true;
+        }
+
+        if (user1.getFriends().containsKey(user2)) {
+            if (user1.favoriteSongInCommon(user2))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        Set<User> reachable = new HashSet<User>(); /* BFS Implementation - Algorithem Course Lecture 1 */
         Queue<User> queue = new LinkedList<User>();
         reachable.add(user1);
         queue.add(user1);
