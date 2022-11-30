@@ -48,6 +48,9 @@ public class UserImpl implements OOP.Provided.User {
     }
 
     public double getAverageRating() {
+        if(this.songMap.size() == 0){
+            return 0;
+        }
         double sum = this.songMap.values().stream().reduce(0, Integer::sum);
         return (sum / this.songMap.size());
     }
@@ -93,7 +96,7 @@ public class UserImpl implements OOP.Provided.User {
             return false;
         }
 
-        LinkedList<Song> favoriteSongOther = (LinkedList<Song>) user.getFavoriteSongs();
+        Collection<Song> favoriteSongOther = user.getFavoriteSongs();
 
         return (this.getFavoriteSongs().stream()
                 .filter(entry -> favoriteSongOther.contains(entry)).count() >= 1);
