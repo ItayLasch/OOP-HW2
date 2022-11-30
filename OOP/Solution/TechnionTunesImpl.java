@@ -124,12 +124,15 @@ public class TechnionTunesImpl implements TechnionTunes {
             queue.addAll(toAdd);
         }
 
-        return true;
+        return false;
     }
 
-    class CompareSongsByRatings implements Comparator<Song> {
+    static class CompareSongsByRatings implements Comparator<Song> {
         @Override
         public int compare(Song s1, Song s2) {
+            Song temp = s1;
+            s1 = s2;
+            s2 = temp;
             double diffAvg = s1.getAverageRating() - s2.getAverageRating();
             if (diffAvg > 0) {
                 return 1;
@@ -146,9 +149,12 @@ public class TechnionTunesImpl implements TechnionTunes {
         }
     }
 
-    class CompareSongByRaters implements Comparator<Song> {
+    static class CompareSongByRaters implements Comparator<Song> {
         @Override
         public int compare(Song s1, Song s2) {
+            Song temp = s1;
+            s1 = s2;
+            s2 = temp;
             int diff = s1.getRaters().size() - s2.getRaters().size();
             if (diff != 0) {
                 return diff;
@@ -163,9 +169,12 @@ public class TechnionTunesImpl implements TechnionTunes {
         }
     }
 
-    class CompareUserByRates implements Comparator<User> {
+    static class CompareUserByRates implements Comparator<User> {
         @Override
         public int compare(User u1, User u2) {
+            User temp = u1;
+            u1 = u2;
+            u2 = temp;
             double diffAvg = u1.getAverageRating() - u2.getAverageRating();
             if (diffAvg > 0) {
                 return 1;
@@ -204,6 +213,9 @@ public class TechnionTunesImpl implements TechnionTunes {
         class CompareIterable implements Comparator<Song> {
             @Override
             public int compare(Song s1, Song s2) {
+                Song temp = s1;
+                s1 = s2;
+                s2 = temp;
                 int diff = s2.getLength() - s1.getLength();
                 if (diff != 0) {
                     return diff;
