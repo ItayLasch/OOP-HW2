@@ -47,6 +47,15 @@ public class SongImpl implements OOP.Provided.Song {
     }
 
     public void rateSong(User user, int rate) throws User.IllegalRateValue, User.SongAlreadyRated {
+        if (rate < 0 || rate > 10)
+        {
+            throw new User.IllegalRateValue();
+        }
+        if (this.raters.containsKey(user))
+        {
+            throw new User.SongAlreadyRated();
+        }
+        
         this.raters.put(user, rate);
         if (!this.totalRates.containsKey(rate)) {
             this.totalRates.put(rate, new HashSet<User>());

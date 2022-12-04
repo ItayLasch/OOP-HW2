@@ -57,11 +57,6 @@ public class UserImpl implements OOP.Provided.User {
 
     public int getPlaylistLength() {
         return this.songMap.keySet().stream().map(s -> s.getLength()).reduce(0, Integer::sum);
-        /*for (Map.Entry<Song, Integer> entry : this.songMap.entrySet()) {
-            totalLength += entry.getKey().getLength();
-        }
-
-        return totalLength;*/
     }
 
     public Collection<Song> getRatedSongs() {
