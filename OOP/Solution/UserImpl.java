@@ -35,7 +35,7 @@ public class UserImpl implements OOP.Provided.User {
     }
 
     public User rateSong(final Song song, int rate) throws IllegalRateValue, SongAlreadyRated {
-        if (!(rate >= 1 && rate <= 10)) {
+        if (!(rate >= 0 && rate <= 10)) {
             throw new IllegalRateValue();
         }
 
@@ -48,7 +48,7 @@ public class UserImpl implements OOP.Provided.User {
     }
 
     public double getAverageRating() {
-        if(this.songMap.size() == 0){
+        if (this.songMap.size() == 0) {
             return 0;
         }
         double sum = this.songMap.values().stream().reduce(0, Integer::sum);
@@ -70,7 +70,8 @@ public class UserImpl implements OOP.Provided.User {
             return new LinkedList<Song>();
         }
 
-        return this.songMap.entrySet().stream().filter(entry -> entry.getValue() >= 8).map(e -> e.getKey()).collect(Collectors.toList());
+        return this.songMap.entrySet().stream().filter(entry -> entry.getValue() >= 8).map(e -> e.getKey())
+                .collect(Collectors.toList());
     }
 
     public User AddFriend(User friend) throws AlreadyFriends, SamePerson {
@@ -123,7 +124,7 @@ public class UserImpl implements OOP.Provided.User {
 
     class CompareRatedSongs implements Comparator<Map.Entry<Song, Integer>> {
         @Override
-        public int compare(Map.Entry<Song, Integer> e1, Map.Entry<Song, Integer> e2) {
+        public int compare(Map.Entry<Song, Integer> e2, Map.Entry<Song, Integer> e1) {
             int diff = e1.getValue().compareTo(e2.getValue());
             if (diff != 0) {
                 return diff;

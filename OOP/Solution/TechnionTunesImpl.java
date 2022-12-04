@@ -203,10 +203,7 @@ public class TechnionTunesImpl implements TechnionTunes {
 
         class CompareIterable implements Comparator<Song> {
             @Override
-            public int compare(Song s1, Song s2) {
-                Song temp = s1;
-                s1 = s2;
-                s2 = temp;
+            public int compare(Song s2, Song s1) {
                 int diff = s2.getLength() - s1.getLength();
                 if (diff != 0) {
                     return diff;
