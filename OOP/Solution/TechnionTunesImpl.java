@@ -129,10 +129,7 @@ public class TechnionTunesImpl implements TechnionTunes {
 
     static class CompareSongsByRatings implements Comparator<Song> {
         @Override
-        public int compare(Song s1, Song s2) {
-            Song temp = s1;
-            s1 = s2;
-            s2 = temp;
+        public int compare(Song s2, Song s1) {
             double diffAvg = s1.getAverageRating() - s2.getAverageRating();
             if (diffAvg > 0) {
                 return 1;
@@ -151,10 +148,7 @@ public class TechnionTunesImpl implements TechnionTunes {
 
     static class CompareSongByRaters implements Comparator<Song> {
         @Override
-        public int compare(Song s1, Song s2) {
-            Song temp = s1;
-            s1 = s2;
-            s2 = temp;
+        public int compare(Song s2, Song s1) {
             int diff = s1.getRaters().size() - s2.getRaters().size();
             if (diff != 0) {
                 return diff;
@@ -171,10 +165,7 @@ public class TechnionTunesImpl implements TechnionTunes {
 
     static class CompareUserByRates implements Comparator<User> {
         @Override
-        public int compare(User u1, User u2) {
-            User temp = u1;
-            u1 = u2;
-            u2 = temp;
+        public int compare(User u2, User u1) {
             double diffAvg = u1.getAverageRating() - u2.getAverageRating();
             if (diffAvg > 0) {
                 return 1;
