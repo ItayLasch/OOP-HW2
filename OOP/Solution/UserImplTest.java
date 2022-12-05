@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import javax.swing.text.html.HTMLDocument;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -81,18 +82,42 @@ class UserImplTest {
         Song s = new SongImpl(s5);
         assert(s != s5);
         assertEquals(s, s5);
+        assertNotEquals(s, s6);
     }
 
     @Test
-    void addFriend() {
+    void addFriend() throws User.SamePerson, User.AlreadyFriends, User.IllegalRateValue, User.SongAlreadyRated {
+
     }
 
     @Test
-    void favoriteSongInCommon() {
+    void favoriteSongInCommon() throws User.SamePerson, User.AlreadyFriends, User.IllegalRateValue, User.SongAlreadyRated {
+
+        User u2 = new UserImpl(9, "u2", 13);
+        user.AddFriend(u2);
+        Song s = new SongImpl(2, "song", 3, "singer");
+        u2.rateSong(s, 8);
+        Song s2 = new SongImpl(101, "s2", 12, "aa");
+        u2.rateSong(s2, 1);
+        assert(!user.favoriteSongInCommon(u2));
+        user.rateSong(s, 10);
+        assert(user.favoriteSongInCommon(u2));
+
+
     }
 
     @Test
-    void getFriends() {
+    void getFriends() throws User.SamePerson, User.AlreadyFriends, User.IllegalRateValue, User.SongAlreadyRated {
+        User u2 = new UserImpl(9, "u2", 13);
+        Song s = new SongImpl(2, "song", 3, "singer");
+        u2.rateSong(s, 8);
+        Song s2 = new SongImpl(101, "s2", 12, "aa");
+        u2.rateSong(s2, 1);
+        assert(user.getFriends().isEmpty());
+        user.AddFriend(u2);
+
+        assert(user.getFriends().containsKey(u2));
+
     }
 
     @Test
