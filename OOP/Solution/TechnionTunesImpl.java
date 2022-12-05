@@ -11,8 +11,8 @@ public class TechnionTunesImpl implements TechnionTunes {
     Map<Integer, Song> songs;
 
     public TechnionTunesImpl() {
-        users = new HashMap<Integer, User>();
-        songs = new HashMap<Integer, Song>();
+        users = new HashMap<>();
+        songs = new HashMap<>();
     }
 
     public void addUser(int userID, String userName, int userAge) throws UserAlreadyExists {
@@ -63,8 +63,8 @@ public class TechnionTunesImpl implements TechnionTunes {
         song.rateSong(user, rate);
     }
 
-    public Set<Song> getIntersection(int IDs[]) throws UserDoesntExist {
-        Set<Song> songSet = new HashSet<Song>(this.songs.values());
+    public Set<Song> getIntersection(int[] IDs) throws UserDoesntExist {
+        Set<Song> songSet = new HashSet<>(this.songs.values());
         for (int id : IDs) {
             songSet.retainAll(this.getUser(id).getRatedSongs());
         }
@@ -100,15 +100,11 @@ public class TechnionTunesImpl implements TechnionTunes {
         }
 
         if (user1.getFriends().containsKey(user2)) {
-            if (user1.favoriteSongInCommon(user2))
-            {
-                return true;
-            }
-            return false;
+            return user1.favoriteSongInCommon(user2);
         }
 
-        Set<User> reachable = new HashSet<User>(); /* BFS Implementation - Algorithem Course Lecture 1 */
-        Queue<User> queue = new LinkedList<User>();
+        Set<User> reachable = new HashSet<>(); /* BFS Implementation - Algorithem Course Lecture 1 */
+        Queue<User> queue = new LinkedList<>();
         reachable.add(user1);
         queue.add(user1);
 
@@ -182,9 +178,9 @@ public class TechnionTunesImpl implements TechnionTunes {
         }
     }
 
-    class TechnionTunesIterator implements Iterator<Song> {
+    static class TechnionTunesIterator implements Iterator<Song> {
 
-        private List<Song> iteratableSongs;
+        private final List<Song> iteratableSongs;
         private int index;
 
         public TechnionTunesIterator(Map<Integer, Song> songs) {
@@ -201,7 +197,7 @@ public class TechnionTunesImpl implements TechnionTunes {
             return iteratableSongs.get(index++);
         }
 
-        class CompareIterable implements Comparator<Song> {
+        static class CompareIterable implements Comparator<Song> {
             @Override
             public int compare(Song s2, Song s1) {
                 int diff = s2.getLength() - s1.getLength();

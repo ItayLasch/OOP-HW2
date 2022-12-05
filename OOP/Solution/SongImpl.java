@@ -18,15 +18,15 @@ public class SongImpl implements OOP.Provided.Song {
         this.songName = songName;
         this.length = length;
         this.singerName = singerName;
-        this.raters = new HashMap<User, Integer>();
-        this.totalRates = new HashMap<Integer, Set<User>>();
+        this.raters = new HashMap<>();
+        this.totalRates = new HashMap<>();
     }
 
     SongImpl(Song other) {
-        this.songID = ((SongImpl) other).getID();
-        this.songName = ((SongImpl) other).getName();
-        this.length = ((SongImpl) other).getLength();
-        this.singerName = ((SongImpl) other).getSingerName();
+        this.songID = other.getID();
+        this.songName = other.getName();
+        this.length = other.getLength();
+        this.singerName = other.getSingerName();
         this.totalRates = ((SongImpl) other).totalRates;
     }
 
@@ -56,14 +56,14 @@ public class SongImpl implements OOP.Provided.Song {
 
         this.raters.put(user, rate);
         if (!this.totalRates.containsKey(rate)) {
-            this.totalRates.put(rate, new HashSet<User>());
+            this.totalRates.put(rate, new HashSet<>());
         }
         this.totalRates.get(rate).add(user);
     }
 
     public Collection<User> getRaters() {
         CompareRaters comp = new CompareRaters();
-        return this.raters.entrySet().stream().sorted(comp).map(e -> e.getKey()).collect(Collectors.toList());
+        return this.raters.entrySet().stream().sorted(comp).map(Map.Entry::getKey).collect(Collectors.toList());
     }
 
     public Map<Integer, Set<User>> getRatings() {
@@ -98,7 +98,7 @@ public class SongImpl implements OOP.Provided.Song {
         return Integer.compare(this.songID, song.getID());
     }
 
-    class CompareRaters implements Comparator<Map.Entry<User, Integer>> {
+    static class CompareRaters implements Comparator<Map.Entry<User, Integer>> {
         @Override
         public int compare(Map.Entry<User, Integer> e2, Map.Entry<User, Integer> e1) {
             int diff = e1.getValue().compareTo(e2.getValue());

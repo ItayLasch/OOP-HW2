@@ -18,8 +18,8 @@ public class UserImpl implements OOP.Provided.User {
         this.userID = userID;
         this.userName = userName;
         this.userAge = userAge;
-        this.songMap = new HashMap<Song, Integer>();
-        this.friendList = new LinkedList<User>();
+        this.songMap = new HashMap<>();
+        this.friendList = new LinkedList<>();
     }
 
     public int getID() {
@@ -56,21 +56,24 @@ public class UserImpl implements OOP.Provided.User {
     }
 
     public int getPlaylistLength() {
-        return this.songMap.keySet().stream().map(s -> s.getLength()).reduce(0, Integer::sum);
+        return this.songMap.keySet().stream().map(Song::getLength).reduce(0, Integer::sum);
     }
 
     public Collection<Song> getRatedSongs() {
         CompareRatedSongs comp = new CompareRatedSongs();
-        return this.songMap.entrySet().stream().sorted(comp).map(e -> e.getKey())
+        return this.songMap.entrySet().stream().sorted(comp).map(Map.Entry::getKey)
                 .collect(Collectors.toList());
     }
 
     public Collection<Song> getFavoriteSongs() {
         if (this.songMap.isEmpty()) {
-            return new LinkedList<Song>();
+            return new LinkedList<>();
         }
 
-        return this.songMap.entrySet().stream().filter(entry -> entry.getValue() >= 8).map(e -> e.getKey())
+        return this.songMap.entrySet().stream().
+                filter(entry -> entry.getValue() >= 8)
+                .map(Map.Entry::getKey)
+                .sorted(Comparator.comparingInt(Song::getID))
                 .collect(Collectors.toList());
     }
 
@@ -94,8 +97,7 @@ public class UserImpl implements OOP.Provided.User {
 
         Collection<Song> favoriteSongOther = user.getFavoriteSongs();
 
-        return (this.getFavoriteSongs().stream()
-                .filter(entry -> favoriteSongOther.contains(entry)).count() >= 1);
+        return (this.getFavoriteSongs().stream().anyMatch(favoriteSongOther::contains));
     }
 
     public Map<User, Integer> getFriends() {
@@ -122,7 +124,7 @@ public class UserImpl implements OOP.Provided.User {
         return Integer.compare(this.userID, user.getID());
     }
 
-    class CompareRatedSongs implements Comparator<Map.Entry<Song, Integer>> {
+    static class CompareRatedSongs implements Comparator<Map.Entry<Song, Integer>> {
         @Override
         public int compare(Map.Entry<Song, Integer> e2, Map.Entry<Song, Integer> e1) {
             int diff = e1.getValue().compareTo(e2.getValue());
