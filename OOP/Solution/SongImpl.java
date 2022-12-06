@@ -22,14 +22,6 @@ public class SongImpl implements OOP.Provided.Song {
         this.totalRates = new HashMap<>();
     }
 
-    SongImpl(Song other) {
-        this.songID = other.getID();
-        this.songName = other.getName();
-        this.length = other.getLength();
-        this.singerName = other.getSingerName();
-        this.totalRates = ((SongImpl) other).totalRates;
-    }
-
     public int getID() {
         return songID;
     }
